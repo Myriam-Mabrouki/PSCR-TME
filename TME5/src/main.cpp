@@ -6,6 +6,9 @@
 #include <fstream>
 #include <limits>
 #include <random>
+#include "Barrier.h"
+#include "Queue.h"
+#include "Pool.h"
 
 using namespace std;
 using namespace pr;
@@ -125,6 +128,12 @@ int main () {
 	// Les couleurs des pixels dans l'image finale
 	Color * pixels = new Color[scene.getWidth() * scene.getHeight()];
 
+
+	//Créarion pool de threads + barrière
+	Pool pool(16);
+	Barrier b(scene.getWidth()*scene.getHeight());
+	pool.start(16);
+
 	// pour chaque pixel, calculer sa couleur
 	for (int x =0 ; x < scene.getWidth() ; x++) {
 		for (int  y = 0 ; y < scene.getHeight() ; y++) {
@@ -132,6 +141,7 @@ int main () {
 			auto & screenPoint = screen[y][x];
 			// le rayon a inspecter
 			Rayon  ray(scene.getCameraPos(), screenPoint);
+			pool.submit(new PixelJob(&b, ) )
 
 			int targetSphere = findClosestInter(scene, ray);
 

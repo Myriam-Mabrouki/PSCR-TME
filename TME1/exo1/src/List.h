@@ -45,6 +45,6 @@ public:
 
 std::ostream & operator<< (std::ostream & os, const List & vec) ;
 
-} /* namespace pr */
+}/* namespace pr */
 
 #endif /* SRC_LIST_H_ */

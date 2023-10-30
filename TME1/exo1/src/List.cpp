@@ -23,7 +23,7 @@ void Chainon::print (std::ostream & os) const {
 		os << ", ";
 		next->print(os);
 	}
-	/* FAUTE: le next est en dehors du if, boucle infinie */
+	/* FAUTE: le next est en dehors du if, erreur de segmentation */
 
 }
 

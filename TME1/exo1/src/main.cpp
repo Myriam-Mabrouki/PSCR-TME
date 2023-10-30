@@ -41,6 +41,7 @@ int main () {
 	}*/
 
 	/* FAUTE: Manque que les [] */
+
 	// et la chaîne elle même
 	delete[] str;
 

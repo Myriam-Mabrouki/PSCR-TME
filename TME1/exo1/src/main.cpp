@@ -34,7 +34,7 @@ int main () {
 		std::cout << "elt " << i << ": " << list[i] << std::endl;
 	}
 
-	/* FAUTE: Les champs de la chaîne n'ont pas besoin d'être libérés individuellement. */
+	/* FAUTE: Les char de la chaîne ne doivent pas être libérés individuellement. */
 	// liberer les char de la chaine
 	/*for (char *cp = str ; *cp ; cp++) {
 		delete cp;

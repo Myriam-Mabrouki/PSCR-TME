@@ -40,13 +40,10 @@ public:
 
 	bool empty() ;
 
-	friend std::ostream & operator<< (std::ostream & os, const List & vec) ;
-
 	size_t size() const ;
 };
 
-/* FAUTE: la fonction amie est déclarée en dehors de la classe. Ajout du mot clé friend. */
-//std::ostream & operator<< (std::ostream & os, const List & vec) ;
+std::ostream & operator<< (std::ostream & os, const List & vec) ;
 
 } /* namespace pr */
 

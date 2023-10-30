@@ -68,6 +68,7 @@ size_t List::size() const {
 	}
 }
 
+/* FAUTE: la fonction est déclarée en dehors du namespace pr. */
 std::ostream & operator<< (std::ostream & os, const pr::List & vec)
 {
 	os << "[";
@@ -79,15 +80,3 @@ std::ostream & operator<< (std::ostream & os, const pr::List & vec)
 }
 
 } // namespace pr
-
-/* FAUTE: la fonction est déclarée en dehors du namespace pr. */
-
-/*std::ostream & operator<< (std::ostream & os, const pr::List & vec)
-{
-	os << "[";
-	if (vec.tete != nullptr) {
-		vec.tete->print (os) ;
-	}
-	os << "]";
-	return os;
-}*/

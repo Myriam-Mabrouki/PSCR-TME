@@ -13,9 +13,8 @@ bool ninterupted = true;
 
 void producteur (Stack<char> * stack) {
 	char c ;
-	std::cout << "début prod" << std::endl;
 	while (cin.get(c)) {
-		std::cout << "snifsnif" << std::endl;
+		//std::cout << "snifsnif" << std::endl;
 		stack->push(c);
 	}
 }
@@ -28,6 +27,11 @@ void consomateur (Stack<char> * stack) {
 }
 
 int main () {
+	std::cout<<getpid()<<std::endl;
+	signal(SIGINT,[](int var){
+		std::cout<<"Handler du pere "<<getpid()<<std::endl;
+		ninterupted = false;
+	});
 
 	int fd;
 	Stack<char> * sp;
@@ -54,22 +58,26 @@ int main () {
 
 	pid_t pp = fork();
 	if (pp==0) {
+		signal(SIGINT,[](int var){
+		std::cout<<"Handler du fils producteur "<<getpid()<<std::endl;
+		exit(1);
+		});
 		producteur(s);
-		std::cout << "fin prod" << std::endl;
 		return 0;
 	}
 
 	pid_t pc = fork();
 	if (pc==0) {
+		signal(SIGINT,[](int var){
+		std::cout<<"Handler du fils conso "<<getpid()<<std::endl;
+		exit(1);
+		});
 		consomateur(s);
-		std::cout << "fin conso" << std::endl;
 		return 0;
 	}
 
 	wait(0);
 	wait(0);
-
-	signal(SIGINT,[](int var){ninterupted = false;});
 
 	while(ninterupted){}
 	/* “detacher” le segment */

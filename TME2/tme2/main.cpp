@@ -29,7 +29,7 @@ int main () {
 	std::vector<pair<string,int>> vect_pair;
 
 	//Question 6
-	HashTable<string, int> hm = HashTable<string, int>(30000); 
+	HashTable<string, int> hm = HashTable<string, int>(1000); 
 
 	//Question 7
 	
@@ -43,8 +43,8 @@ int main () {
 		
 		//Question 2
 		//On cherche s'il existe un mot différent
-		bool found = false;
-		for (int i=0; i<vect.size(); ++i){
+		/*bool found = false;
+		for (size_t i=0; i<vect.size(); ++i){
 			if (!word.compare(vect[i])){
 				found = true;
 				break;
@@ -59,7 +59,7 @@ int main () {
 
 		//Question 3
 		bool found2 = false;
-		for (int i=0; i<vect_pair.size(); ++i){
+		for (size_t i=0; i<vect_pair.size(); ++i){
 			if (!word.compare(vect_pair[i].first)){
 				vect_pair[i].second++;
 				found2 =true;
@@ -70,15 +70,16 @@ int main () {
 		if (!found2){
 			vect_pair.push_back(pair<string,int>(word,1));
 		}
-
+		*/
 		//Question 6
 		int * val = hm.get(word);
 		if (!val) {
-			hm.put(word, 0);
+			hm.put(word, 1);
 		}
 		else {
 			hm.put(word, *val  + 1);
 		}
+		
 		
 
 		// word est maintenant "tout propre"
@@ -101,7 +102,7 @@ int main () {
 
 	//Question 3
 	bool found_war = false, found_peace = false, found_toto = false;
-	for (int i=0; i<vect_pair.size(); i++){
+	for (size_t i=0; i<vect_pair.size(); i++){
 		if (!(new string("war"))->compare(vect_pair[i].first)){
 			cout << "Found a total of " << vect_pair[i].second << " war." << endl;
 			found_war = true;
@@ -127,27 +128,39 @@ int main () {
 	}
 
 	//Question 6
-	/* int * nb = hm.get("war");
+	 int * nb = hm.get("war");
 	if (nb) {
-		cout << "Found a total of " << *nb << " war." << endl;
+		cout << "Found a total of " << *nb << " war in hashmap" << endl;
 	}
 	else {
-		cout << "Found a total of 0 war." << endl;
+		cout << "Found a total of 0 war in hashmap" << endl;
 	}
 	nb = hm.get("peace");
 	if (nb) {
-		cout << "Found a total of " << *nb << " peace." << endl;
+		cout << "Found a total of " << *nb << " peace in hashmap" << endl;
 	}
 	else {
-		cout << "Found a total of 0 peace." << endl;
+		cout << "Found a total of 0 peace in hashmap" << endl;
 	}
 	nb = hm.get("toto");
 	if (nb) {
-		cout << "Found a total of " << *nb << " toto." << endl;
+		cout << "Found a total of " << *nb << " toto in hashmap" << endl;
 	}
 	else {
-		cout << "Found a total of 0 toto." << endl;
-	} */
+		cout << "Found a total of 0 toto in hashmap" << endl;
+	} 
+
+
+	cout << "\n\n\nMaking a vector out of the hashmap and sorting it"<< endl;
+	vect_pair = hm.vectorize(vect_pair);
+
+	cout << "\nSorting Vector"<<endl;
+	std::sort(vect_pair.begin(),vect_pair.end(),[](pair<string,int> a, pair<string,int> b){ return a.second > b.second;});
+
+	cout << "\n10 Most used words in the book\n" << endl;
+	for (int i = 0 ; i<10; ++i){
+		cout << i+1<<" : "<< vect_pair[i].first << " is here " <<vect_pair[i].second<< " times"<<endl;
+	}
 
 
     return 0;

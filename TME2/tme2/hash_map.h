@@ -10,9 +10,6 @@ namespace pr {
 
     class HashTable {
 
-        
-            
-            
 
 
         public: 
@@ -30,12 +27,12 @@ namespace pr {
         
             HashTable (int size) {
                 bucket.reserve(size);
-                for(size_t i = 0;i<size;i++){
+                for(int i = 0;i<size;i++){
                     bucket.push_back(std::forward_list<Entry>());
                 }
             }
             ~HashTable () {
-                for (int i = 0; i < bucket.size(); ++i) {
+                for (size_t i = 0; i < bucket.size(); ++i) {
                     bucket[i].clear();
                 }
                 bucket.clear();
@@ -83,13 +80,25 @@ namespace pr {
                 return size_;
             }
 
+            /*void grow () {
+                HashTable newTable = HashTable(bucket.size()*2);
+                size_t size = bucket.size();
+                for (size_t i = 0 ; i <size ;i++) {
+                    for (auto & entry : bucket[i]) {
+                        newTable.put(entry.key, entry.val);
+                    }
+                }
+                bucket = newTable.bucket;
+                
+            }*/
+
             std::vector<std::pair<std::string,int>>& vectorize(std::vector<std::pair<std::string,int>>& vec){
                 
                 int capa = bucket.capacity();
                 for(int i = 0 ; i <capa ;i++){
-                    if(bucket[i].empty==false){
-                        for(auto it = bucket[i].begin(); it<bucket[i].end();it++ ){
-                            vec.push_back(std::pair<std::string,int>(it->key,it->val));
+                    if(bucket[i].empty()==false){
+                        for(auto it : bucket[i] ){
+                            vec.push_back(std::pair<std::string,int>(it.key,it.val));
                         }
                     }
                 }

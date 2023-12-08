@@ -17,8 +17,10 @@ public :
 	// Tente de creer une socket d'attente sur le port donné
 	bool startServer (int port);
 
+	void handlerClient(Socket scom);
+
 	// stoppe le serveur
-	void stopServer () ;
+	void stopServer ();
 };
 
 } // ns pr

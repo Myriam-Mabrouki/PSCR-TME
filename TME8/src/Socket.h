@@ -4,6 +4,18 @@
 #include <netinet/ip.h>
 #include <string>
 #include <iosfwd>
+#include <cstring>
+#include <netdb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <iostream>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
 
 namespace pr {
 

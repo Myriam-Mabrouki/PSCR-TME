@@ -2,6 +2,15 @@
 #define SRC_SERVERSOCKET_H_
 
 #include "Socket.h"
+#include <netdb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <iostream>
+#include "Socket.h"
 
 namespace pr {
 

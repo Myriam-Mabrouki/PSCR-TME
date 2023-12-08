@@ -11,19 +11,34 @@ namespace pr {
             perror("socket");
             exit(1);
         }
+
+        struct addrinfo hints;
+        memset(&hints, 0, sizeof(hints));
+        hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
+        hints.ai_socktype = SOCK_DGRAM; /* Datagram socket */
+        hints.ai_flags = 0;
+        hints.ai_protocol = 0;   
         
-        getaddrinfo(host, sprinft("%d",port), NULL, &res);
+        char service [5]; 
+        sprintf(service,"%d", port);
+        int s = getaddrinfo(host.c_str(), service, &hints, &res);
+        if (s != 0) {
+            fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
+            exit(EXIT_FAILURE);
+        }
 
         backup = res;
 
         while (res){
-            if (ai_family == AF_INET) break;
-            res = ai_next;
+            if (res->ai_family == AF_INET) break;
+            res = res->ai_next;
         }
 
         /* Etablir la connexion */
-        if (connect(fd, &res, sizeof(res)) == -1) {
-            perror("connect"); exit(1);
+        if (::connect(fd, res->ai_addr, res->ai_addrlen) == -1) {
+            ::close(fd);
+            perror("connect");
+            exit(1);
         }
 
         freeaddrinfo(backup);
@@ -36,20 +51,21 @@ namespace pr {
         char host[64];
         
         memset((void*)&sin, 0, sizeof(sin));
-        sin.sin_addr.s_addr = ipv4;
+        sin.sin_addr = ipv4;
         sin.sin_family = AF_INET;
-        if (getnameinfo((struct sockaddr*)&sin, sizeof(sin), host, sizeof(host), sprinft("%d", port), NULL, 0) != 0) {
+        char service [5];
+        sprintf(service,"%d", port); 
+        if (getnameinfo((struct sockaddr*)&sin, sizeof(sin), host, sizeof(host), service, NULL, 0) != 0) {
             perror("getnameinfo");
             exit(EXIT_FAILURE);
         }
-
         connect(host,port);
     }
 
 
     void Socket::close(){
         shutdown(fd,2);
-        close(fd);
+        ::close(fd);
     }
 
     std::ostream & operator<< (std::ostream & os, struct sockaddr_in * addr){
@@ -58,7 +74,8 @@ namespace pr {
             perror("getnameinfo");
             exit(EXIT_FAILURE);
         }
-        return os << host << ": " << inet_ntoa(addr) << " " << addr->sin_port;
+        
+        return os << std::string(host) << ": " << inet_ntoa(addr->sin_addr) << " " << addr->sin_port;
     }
 }
 

@@ -162,6 +162,20 @@ int main () {
 		cout << i+1<<" : "<< vect_pair[i].first << " is here " <<vect_pair[i].second<< " times"<<endl;
 	}
 
+	cout << "\n\n\n###TME 3###\n" << endl;
+
+	std::vector<pair<string,int>> vecQ5;
+	for(auto it = hm.begin() ;it!=hm.end() ;++it){
+		vecQ5.push_back(std::pair<std::string,int>((*it).key,(*it).val));
+	}
+
+	cout << "\n10 Most used words in the book\n" << endl;
+	std::sort(vecQ5.begin(),vecQ5.end(),[](pair<string,int> a, pair<string,int> b){ return a.second > b.second;});
+	for (int i = 0 ; i<10; ++i){
+		cout << i+1<<" : "<< vecQ5[i].first << " is here " <<vecQ5[i].second<< " times"<<endl;
+	}
+
+
 
     return 0;
 }

@@ -24,6 +24,47 @@ namespace pr {
             std::vector<std::forward_list<Entry>> bucket;
             size_t size_;
 
+
+            class iterator{
+
+                private:
+                //obligé de rajouter typename partout sinon le compilo chouine
+                    typename std::vector<std::forward_list<Entry>>::iterator bucketEnd;
+                    typename std::vector<std::forward_list<Entry>>::iterator vit;
+                    typename std::forward_list<Entry>::iterator lit;
+
+                public:
+                    //obliger de rajouter const sinon le compilo chouine ENCORE
+                    iterator(const typename std::vector<std::forward_list<Entry>>::iterator & bucketEnd,const typename std::vector<std::forward_list<Entry>>::iterator & vit,const typename std::forward_list<Entry>::iterator & lit):bucketEnd(bucketEnd), vit(vit),lit(lit){}
+
+                    iterator & operator++(){
+                        lit++;
+
+                        if(lit == vit->end()){
+                            vit++;
+
+                            while ((vit->empty()) && (vit != bucketEnd)) { 
+                                vit++;
+                            } 
+
+                            if (vit != bucketEnd) { 
+                                lit = vit->begin(); 
+                            } 
+                        } 
+
+                        return *this;
+                    }
+
+                    Entry & operator*(){
+                        return *lit;
+                    }
+
+                    bool operator!=(iterator it) { 
+                        return (vit != it.vit || lit != it.lit); 
+                    }
+
+            };
+
         
             HashTable (int size) {
                 bucket.reserve(size);
@@ -105,7 +146,67 @@ namespace pr {
                 return vec;
             }
 
+
+
+            iterator begin(){
+
+                if(size_==0){
+                    return iterator(bucket.end(),bucket.end(),(bucket.front()).end());
+                }
+                
+                //HAHAHA IL FAUT LE TYPENAME ICI AUSSI
+                typename std::vector<std::forward_list<Entry>>::iterator vit = bucket.begin();
+
+                while (vit->empty() && vit != bucket.end()){ 
+                    vit++; 
+                }
+
+                if (vit != bucket.end()) { 
+                    
+                    return iterator(bucket.end(), vit, vit->begin());
+                } else { 
+                    
+                    return iterator(bucket.end(), bucket.end(), (bucket.front()).end());
+                } 
+
+            } 
+
+            iterator end(){                
+                return iterator(bucket.end(),bucket.end(),(bucket.front()).end());
+            } 
+            
+            
+
     };
 
     //fin du namespace
 }
+
+/*
+     |/|
+     |/|
+     |/|
+     |/|
+     |/|
+     |/|
+     |/| /¯)
+     |/|/\/
+     |/|\/
+    (¯¯¯)
+    (¯¯¯)
+    (¯¯¯)
+    (¯¯¯)
+    (¯¯¯)
+    /¯¯/\
+   / ,^./\
+  / /   \/\
+ / /     \/\
+( (       )/)
+| |       |/|
+| |       |/|
+| |       |/|
+( (       )/)
+ \ \     / /
+  \ `---' /
+   `-----'    
+*/

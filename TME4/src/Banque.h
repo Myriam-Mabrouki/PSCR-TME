@@ -2,10 +2,12 @@
 
 #include "Compte.h"
 #include <vector>
+#include <mutex>
 
 namespace pr {
 
 class Banque {
+	//mutable std::mutex m; //Q9
 	typedef std::vector<Compte> comptes_t;
 	comptes_t comptes;
 public :

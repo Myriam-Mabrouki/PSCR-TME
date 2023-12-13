@@ -15,13 +15,20 @@ On dévérouille le débité et le crédité.
 
 # Question 5
 
-La fonction transfert ayant déjà vérouillé les mutex, les autres fonctions (débiter et créditer) se bloquent.
+La fonction transfert ayant déjà vérouillé les mutex, les autres fonctions (débiter et créditer) se bloquent. En effet, bien que ce soit le même mutex, il ne peut être pris qu'une fois. Le problème est alors corrigé grâce au recursive_mutex.
 
 # Question 6
 
-On remplace le mutex présent par un récursive mutex en appliquant la même stratégie.
+Le problème est le suivant : 
+- dans un premier thread nous avons un débiteur d et un créditeur c
+- dans un second thread nous avons notre débiteur qui est c et notre créditeur qui est d
+Un interblocage peut se produire si nous avons le scénario suivant:
+1) Dans le premier thread : Dans la fonction transfert nous faisons debiteur.lock() sur d 
+2) Dans le second thread : Dans la fonction transfert nous faisons debiteur.lock() sur c 
+Nous sommes ensuite bloquer avec crediteur.lock() dans les deux threads.
+Pour régler ce problème nous devons toujours lock d avant c dans les deux threads. L'ordre de vérouillage (entre débiteur et créditeur) dans transfert dépend donc du numéro des comptes des débiteur et créditeur.
+
 
 # Question 7
 
-Les synchronisations actuelles seront satisfaites si un thread comptable tourne en concurrence avec les threads de transfert. En effet, d'une part la fonction getSolde est protégée par un mutex et d'autre part, une lecture (fonction getSolde) ne peut se dérouler ne parallèle des fonctions d'écriture (créditer et débiter).
-
+Un thread comptable qui tourne en concurrence avec les threads de transfert ne sera pas satisfait avec les synchronisations actuelles. En effet, lorsqu'on parcourt les comptes dans Banque il se peut qu'il y ait des transferts dans les comptes déjà parcourus. Le résultat sera alors incorrect.

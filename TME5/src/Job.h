@@ -93,6 +93,7 @@ class PixelJob : public Job {
 	Scene & scene;
 	std::vector<Vec3D>& lights;
 	Color * pixels;
+	int x,y;
 
 	int calcul () const {
 		// le point de l'ecran par lequel passe ce rayon
@@ -111,19 +112,19 @@ class PixelJob : public Job {
 			const Sphere & obj = *(scene.begin() + targetSphere);
 			// pixel prend la couleur de l'objet
 			Color finalcolor = computeColor(obj, ray, scene.getCameraPos(), lights);
-			// le point de l'image (pixel) dont on vient de calculer la couleur
-			Color & pixel = pixels[y*scene.getHeight() + x];
-			// mettre a jour la couleur du pixel dans l'image finale.
-			pixel = finalcolor;
+			// le point de l'image (pixel) dont on vient de calculer la couleur 
+			//et mettre a jour la couleur du pixel dans l'image finale.
+			pixels[y*scene.getHeight() + x] = finalcolor;
+			
 		}
 		return 0;
 	}
 
 	
 	
-	int x,y;
+	
 public :
-	PixelJob(Barrier & b,const Scene::screen_t & screen, Scene & scene,std::vector<Vec3D> lights,Color * pixels,int x,int y)
+	PixelJob(Barrier & b,const Scene::screen_t & screen, Scene & scene,std::vector<Vec3D> & lights,Color * pixels,int x,int y)
 	:b(b),screen(screen),scene(scene),lights(lights),pixels(pixels), x(x),y(y){}
 	void run () {
 		calcul();

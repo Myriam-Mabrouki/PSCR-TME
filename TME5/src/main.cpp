@@ -162,7 +162,7 @@ int main () {
 	} */
 	for (int x =0 ; x < scene.getWidth() ; x++) {
 		for (int  y = 0 ; y < scene.getHeight() ; y++) {
-			pool.submit(new PixelJob(b,screen,scene,lights,pixels,x,y) );
+			pool.submit(new PixelJob(std::ref(b),screen,scene,lights,pixels,x,y) );
 			
 
 		}

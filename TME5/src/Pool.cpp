@@ -15,7 +15,7 @@ namespace pr {
 
     void Pool::start (int nbthread) {
         for (int i = 0; i < nbthread; i++){
-            threads.emplace_back(poolWorker,&queue);
+            threads.emplace_back([&](){ poolWorker(queue); });
         }
     }
 

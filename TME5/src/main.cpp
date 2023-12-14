@@ -135,7 +135,7 @@ int main () {
 	pool.start(16);
 
 	// pour chaque pixel, calculer sa couleur
-	for (int x =0 ; x < scene.getWidth() ; x++) {
+	/* for (int x =0 ; x < scene.getWidth() ; x++) {
 		for (int  y = 0 ; y < scene.getHeight() ; y++) {
 			// le point de l'ecran par lequel passe ce rayon
 			auto & screenPoint = screen[y][x];
@@ -157,6 +157,13 @@ int main () {
 				// mettre a jour la couleur du pixel dans l'image finale.
 				pixel = finalcolor;
 			}
+
+		}
+	} */
+	for (int x =0 ; x < scene.getWidth() ; x++) {
+		for (int  y = 0 ; y < scene.getHeight() ; y++) {
+			pool.submit(new PixelJob(b,screen,scene,lights,pixels,x,y) );
+			
 
 		}
 	}

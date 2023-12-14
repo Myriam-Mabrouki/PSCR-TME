@@ -88,6 +88,12 @@ public :
 }; */
 
 class PixelJob : public Job {
+	Barrier & b;
+	const Scene::screen_t & screen;
+	Scene & scene;
+	std::vector<Vec3D>& lights;
+	Color * pixels;
+
 	int calcul () const {
 		// le point de l'ecran par lequel passe ce rayon
 		auto & screenPoint = screen[y][x];
@@ -113,11 +119,7 @@ class PixelJob : public Job {
 		return 0;
 	}
 
-	Barrier & b;
-	const Scene::screen_t & screen;
-	Scene & scene;
-	std::vector<Vec3D>& lights;
-	Color * pixels;
+	
 	
 	int x,y;
 public :

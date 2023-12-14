@@ -33,7 +33,7 @@ void fillScene(Scene & scene, default_random_engine & re) {
 
 }
 
-// return the index of the closest object in the scene that intersects "ray"
+/* // return the index of the closest object in the scene that intersects "ray"
 // or -1 if the ray does not intersect any object.
 int findClosestInter(const Scene & scene, const Rayon & ray) {
 	auto minz = std::numeric_limits<float>::max();
@@ -80,7 +80,7 @@ Color computeColor(const Sphere & obj, const Rayon & ray, const Vec3D & camera, 
 	finalcolor = finalcolor * dt + finalcolor * 0.2; // *0.2 = lumiere speculaire ambiante
 
 	return finalcolor;
-}
+} */
 
 // produit une image dans path, représentant les pixels.
 void exportImage(const char * path, size_t width, size_t height, Color * pixels) {
@@ -130,9 +130,9 @@ int main () {
 
 
 	//Créarion pool de threads + barrière
-	Pool pool(16);
+	Pool pool(16); //nb de jobs * nb de threads (donc 2 job par thread)
 	Barrier b(scene.getWidth()*scene.getHeight());
-	pool.start(16);
+	pool.start(8); //nb de threads
 
 	// pour chaque pixel, calculer sa couleur
 	/* for (int x =0 ; x < scene.getWidth() ; x++) {
@@ -167,6 +167,8 @@ int main () {
 
 		}
 	}
+	b.waitFor();
+	pool.stop();
 
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 	    std::cout << "Total time "
